@@ -1,0 +1,26 @@
+name: Docker-Image-Build-CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Login to DockerHub Registry
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Get the version
+        id: vars
+        run: echo ::set-output name=tag::${{ github.sha }}
+      - name: Build the tagged Docker image
+        run: docker build . --file Dockerfile --tag rafaelleonardocruz/terraform-github-compliance-validator:${{steps.vars.outputs.tag}}
+      - name: Push the tagged Docker image
+        run: docker push rafaelleonardocruz/terraform-github-compliance-validator:${{steps.vars.outputs.tag}}
+      - name: Build the latest Docker image
+        run: docker build . --file Dockerfile --tag rafaelleonardocruz/terraform-github-compliance-validator:latest
+      - name: Push the latest Docker image
+        run: docker push rafaelleonardocruz/terraform-github-compliance-validator:latest
