@@ -1,3 +1,4 @@
+![Docker-Image-Build-CI](https://github.com/rafaelleonardocruz/terraform-github-compliance-validator/workflows/Docker-Image-Build-CI/badge.svg)
 # Terraform Github Compliance Validator
 
 ## Description
